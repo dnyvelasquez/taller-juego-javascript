@@ -4,6 +4,7 @@ const btnUp = document.querySelector('#up');
 const btnDown = document.querySelector('#down');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
+const btnRestart = document.querySelector('#re_start');
 const livesSpan = document.querySelector('#lives');
 const timeSpan = document.querySelector('#time');
 const recordSpan = document.querySelector('#record');
@@ -31,6 +32,8 @@ let enemiesPositions = [];
 
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
+
+
 
 function setCanvasSize() {
   if (window.innerHeight > window.innerWidth) {
@@ -176,6 +179,7 @@ btnUp.addEventListener('click', moveUp);
 btnDown.addEventListener('click', moveDown);
 btnLeft.addEventListener('click', moveLeft);
 btnRight.addEventListener('click', moveRight);
+btnRestart.addEventListener('click', re_start);
 
 function moveByKeys(event) {
   switch (event.key) {
@@ -191,33 +195,37 @@ function moveByKeys(event) {
     case 'ArrowDown':
       moveDown();
       break;
-  }
-}
+  };
+};
 
 function moveUp() {
   if ((playerPosition.y - elementsSize) > 1) {
     playerPosition.y -= elementsSize;
     startGame();
-  }
-}
+  };
+};
 
 function moveLeft() {
   if ((playerPosition.x - elementsSize) > 1) {
     playerPosition.x -= elementsSize;
     startGame();
-  }
-}
+  };
+};
 
 function moveRight() {
   if ((playerPosition.x - elementsSize) < (canvasSize - elementsSize)) {
     playerPosition.x += elementsSize;
     startGame();
-  }
-}
+  };
+};
 
 function moveDown() {
   if ((playerPosition.y - elementsSize) < (canvasSize - elementsSize)) {
     playerPosition.y += elementsSize;
     startGame();
-  }
-}
+  };
+};
+
+function re_start() {
+  location.reload();
+};
