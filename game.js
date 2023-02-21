@@ -7,7 +7,9 @@ const btnRight = document.querySelector('#right');
 const btnRestart = document.querySelector('#re_start');
 const livesSpan = document.querySelector('#lives');
 const timeSpan = document.querySelector('#time');
+const clockSpan = document.querySelector('#clock');
 const recordSpan = document.querySelector('#record');
+const flagSpan = document.querySelector('#flag');
 const pResult = document.querySelector('#result');
 
 let canvasSize;
@@ -17,6 +19,9 @@ let lives = 3;
 let timeStart;
 let playerTime;
 let timeInterval;
+
+clockSpan.innerHTML = emojis['CLOCK'];
+flagSpan.innerHTML = emojis['FLAG'];
 
 const playerPosition = {
   x: undefined,
@@ -105,7 +110,7 @@ function startGame() {
 }
 
 function gameWin(){
-  pResult.innerHTML = 'You win!!!';
+  pResult.innerHTML = 'YOU WIN!!!';
   clearInterval(timeInterval);
   const recordTime = localStorage.getItem('record_time')
   const playerTime = Date.now() - timeStart;
@@ -114,7 +119,7 @@ function gameWin(){
       localStorage.setItem('record_time',  playerTime);
       pResult.innerHTML = "RECORD REACHED!!!";
     } else {
-      pResult.innerHTML = "Record didn't reach";
+      pResult.innerHTML = "RECORD HAVEN'T REACHED!!!";
     }
   } else {
     localStorage.setItem('record_time',  playerTime);
@@ -139,6 +144,13 @@ function levelFail() {
   }
   playerPosition.x = undefined;
   playerPosition.y = undefined;
+  
+  
+  const map = maps[level];
+
+  const mapRows = map.trim().split('\n');
+  const mapRowCols = mapRows.map(row => row.trim().split(''));
+
   startGame();
 }
 
