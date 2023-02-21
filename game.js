@@ -133,7 +133,14 @@ function levelWin () {
   startGame();
 };
 
+
+function skullTimeout(x, y) {
+  game.fillText(emojis['D'], x, y);
+  setTimeout(levelFail, 1000);
+}
+
 function levelFail() {
+  
   pResult.innerHTML =  'BOOM!!!';
   lives--;  
   if (lives <= 0) {
@@ -145,13 +152,27 @@ function levelFail() {
   playerPosition.x = undefined;
   playerPosition.y = undefined;
   
-  
   const map = maps[level];
 
   const mapRows = map.trim().split('\n');
   const mapRowCols = mapRows.map(row => row.trim().split(''));
 
-  startGame();
+  enemiesPositions = [];
+  game.clearRect(0,0,canvasSize,canvasSize);
+
+  mapRowCols.forEach((row, rowI) => {
+    row.forEach((col, colI) => {
+      let emoji = emojis[col];
+      const posX = elementsSize * (colI + 1);
+      const posY = elementsSize * (rowI + 1);
+      if (col == "X") {
+        emoji = emojis["B"];
+      }
+      game.fillText(emoji, posX, posY);
+    });
+  });
+
+  setTimeout(startGame, 1000);
 }
 
 function showLives () {
@@ -169,21 +190,23 @@ function ShowRecord() {
 }
 
 function movePlayer() {
-  const giftCollissionX = playerPosition.x.toFixed(3) == giftPosition.x.toFixed(3);
-  const giftCollissionY = playerPosition.y.toFixed(3) == giftPosition.y.toFixed(3);
+  const giftCollissionX = playerPosition.x.toFixed(0) == giftPosition.x.toFixed(0);
+  const giftCollissionY = playerPosition.y.toFixed(0) == giftPosition.y.toFixed(0);
   const giftCollission = giftCollissionX && giftCollissionY;
+  game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
   if (giftCollission) {
     levelWin();
+    game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
   }
   const enemyCollission = enemiesPositions.find(enemy => {
-    const enemyCollissionX = enemy.x.toFixed() == playerPosition.x.toFixed();
-    const enemyCollissionY = enemy.y.toFixed() == playerPosition.y.toFixed();
+    const enemyCollissionX = enemy.x.toFixed(0) == playerPosition.x.toFixed(0);
+    const enemyCollissionY = enemy.y.toFixed(0) == playerPosition.y.toFixed(0);
     return enemyCollissionX && enemyCollissionY;
   });
   if (enemyCollission) {
-    levelFail();
+    skullTimeout(playerPosition.x, playerPosition.y);
   }
-  game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
+  
 }
 
 window.addEventListener('keydown', moveByKeys);
