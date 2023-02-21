@@ -172,6 +172,7 @@ function levelFail() {
     });
   });
 
+
   setTimeout(startGame, 1000);
 }
 
